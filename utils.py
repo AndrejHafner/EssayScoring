@@ -7,4 +7,4 @@ def read_all_essays():
 
 def read_essay(num):
     path = f"data/essays/essay_{num}.txt"
-    return open(path,'r',encoding='latin-1').read().lower()
+    return open(path,'r').read().lower()
