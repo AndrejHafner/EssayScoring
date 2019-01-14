@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
 import nltk
+import re
 
 from nltk import PorterStemmer, word_tokenize, sent_tokenize
 from nltk.corpus import stopwords,brown
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split, cross_val_score
 
-from utils import read_all_essays
-from essay_scorers import EssayStructureScorer,EssayVocabularyScorer
+from utils import read_all_essays, read_essay
+from essay_scorers import EssayStructureScorer, EssayVocabularyScorer, EssayMissingWordsReplacer
 
 # nltk.download('brown')
 # nltk.download('averaged_perceptron_tagger')
@@ -20,6 +21,8 @@ NOUNS = ["NN","NNS","NNP","NNPS"]
 ADVERBS = ["RB","RBR","RBS"]
 ADJECTIVES = ["JJ","JJR","JJS"]
 VERBS = ["VB","VBD","VBG","VBN","VBP","VBZ"]
+
+
 
 
 def clean_data():
@@ -119,7 +122,6 @@ def preprocess_structure_data():
     return df
 
 
-
 def cross_validate_model(model,X,y):
     scores = cross_val_score(model.classifier, X.values, np.array(y.values).ravel(), cv=5)
     print(np.average(scores))
@@ -143,7 +145,9 @@ if __name__ == "__main__":
     vocabulary_scores = pd.read_csv("data/essays_vocabulary_score.txt")
 
     # test_vocabulary_scoring(vocabulary_scores)
-    test_structure_scoring(structure_scores)
-
+    # test_structure_scoring(structure_scores)
+    #find_missing_words()
+    word_replacer = EssayMissingWordsReplacer()
+    print(word_replacer(read_essay(1)))
 # previous best: 0.67718
 # with word count = 0.73527
