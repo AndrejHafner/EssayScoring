@@ -14,7 +14,7 @@ import os
 java_path = "C:/Program Files (x86)/Java/jdk1.8.0_161/bin/java.exe"
 os.environ['JAVAHOME'] = java_path
 
-st = StanfordNERTagger('stanford_ner/english.muc.7class.distsim.crf.ser.gz', 'stanford_ner/stanford-ner.jar',encoding='utf-8')
+# st = StanfordNERTagger('stanford_ner/english.muc.7class.distsim.crf.ser.gz', 'stanford_ner/stanford-ner.jar',encoding='utf-8')
 
 MISSING_WORD_TYPES = ['num','caps','person','month','date','location','organization','time','percent','money']
 
@@ -65,7 +65,7 @@ class EssayMissingWordsReplacer(object):
 
     def replace_missing_words(self,text):
         essay_tokenized = re.split(r'[\s\n]+',text)
-        essay_tokenized_cleaned = [word.replace("&gt;", "").replace("&lt;", "").replace(".", "") for word in essay_tokenized]
+        essay_tokenized_cleaned = [word.replace("&gt;", " ").replace("&lt;", " ").replace(".", " ").strip() for word in essay_tokenized]
         missing_words_replacement = {}
         for i in range(0,len(essay_tokenized_cleaned) - 2):
             word = essay_tokenized_cleaned[i + 2]
@@ -127,13 +127,13 @@ class EssayMissingWordsReplacer(object):
             self.before_word_frequency(essay_tokenized)
 
 
-        # for book in read_books():
-        #     book_tokenized = self.tokenize_text(book)
-        #     self.before_word_frequency(book_tokenized)
+        for book in read_books():
+            book_tokenized = self.tokenize_text(book)
+            self.before_word_frequency(book_tokenized)
 
     def tokenize_text(self,essay):
         essay_tokenized = re.split(r'[\s\n]+', essay)
-        essay_tokenized = [word.replace("&gt;", "").replace("&lt;", "").replace(".", "") for word in essay_tokenized if not word.startswith('@') and not word.startswith('"@')]
+        essay_tokenized = [word.replace("&gt;", "").replace("&lt;", "").replace(".", "").strip() for word in essay_tokenized if not word.startswith('@') and not word.startswith('"@')]
         return essay_tokenized
 
     def before_word_frequency(self, text):

@@ -148,6 +148,6 @@ if __name__ == "__main__":
     # test_structure_scoring(structure_scores)
     #find_missing_words()
     word_replacer = EssayMissingWordsReplacer()
-    print(word_replacer(read_essay(1)))
+    print(word_replacer(read_essay(2)))
 # previous best: 0.67718
 # with word count = 0.73527
